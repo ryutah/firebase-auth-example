@@ -35,6 +35,7 @@ func SampleHandlerMethods() []string {
 func (s *sampleHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	s.ctx, s.w, s.r = appengine.NewContext(r), w, r
 	s.auth = auth.NewInjector()
+	s.common = common.NewInjector()
 
 	switch r.Method {
 	case http.MethodGet:
