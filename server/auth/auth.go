@@ -2,6 +2,9 @@ package auth
 
 import (
 	"context"
+	"encoding/json"
+
+	"google.golang.org/appengine"
 
 	"github.com/ryutah/firebase-auth-example/server/common"
 
@@ -19,7 +22,9 @@ type firebaseAuthenticator struct {
 }
 
 func (f *firebaseAuthenticator) Auth() (string, error) {
-	app, err := firebase.NewApp(f.ctx, nil)
+	app, err := firebase.NewApp(f.ctx, &firebase.Config{
+		ProjectID: appengine.AppID(f.ctx),
+	})
 	if err != nil {
 		f.logger.Error("failed to create firebase app : %v", err)
 		return "", err
@@ -35,8 +40,10 @@ func (f *firebaseAuthenticator) Auth() (string, error) {
 		f.logger.Warn("failed to verify id token : %v", err)
 		return "", ErrAuthenticate
 	}
-	f.logger.Debug("Token : %#v", token)
-	f.logger.Debug("Claims : %v", token.Claims)
+	tokenJSON, _ := json.MarshalIndent(token, "", "  ")
+	claimsJSON, _ := json.MarshalIndent(token.Claims, "", "  ")
+	f.logger.Debug("\n%v", string(tokenJSON))
+	f.logger.Debug("\n%v", string(claimsJSON))
 
 	return token.UID, nil
 }

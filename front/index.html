@@ -7,9 +7,16 @@
 </head>
 
 <body>
+  <div class="notify on-email-verify" style="display: none">
+    <a id="email-verify" href="">メールアドレスを確認する</a>
+  </div>
   <h1>GAE 認証システムサンプル</h1>
-  <div id="sign-area"></div>
-  <div id="email-verify-area"></div>
+  <div id="sign-area">
+    <a id="sign-out" class="on-signin" href="" style="display: none">サインアウト</a>
+  </div>
+  <div class="on-signin" style="display: none">
+    <button id="send">Send to server</button>
+  </div>
 
   <div id="firebaseui-auth-container"></div>
 

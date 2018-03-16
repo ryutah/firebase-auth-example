@@ -86,6 +86,9 @@ func (s *sampleHandler) responseAuthResult(verify bool, userID string) {
 		"verify": verify,
 		"userID": userID,
 	}
+	if !verify {
+		s.w.WriteHeader(http.StatusUnauthorized)
+	}
 	if err := json.NewEncoder(s.w).Encode(resp); err != nil {
 		s.common.GAELogger(s.ctx).Error("failed to write json : %v", err)
 		http.Error(s.w, err.Error(), http.StatusInternalServerError)
