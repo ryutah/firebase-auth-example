@@ -35,7 +35,7 @@ func (f *firebaseAuthenticator) Auth() (string, error) {
 		return "", err
 	}
 
-	token, err := cli.VerifyIDToken(f.idToken)
+	token, err := cli.VerifyIDToken(f.ctx, f.idToken)
 	if err != nil {
 		f.logger.Warn("failed to verify id token : %v", err)
 		return "", ErrAuthenticate
