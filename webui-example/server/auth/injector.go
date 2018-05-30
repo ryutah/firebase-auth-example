@@ -3,7 +3,7 @@ package auth
 import (
 	"context"
 
-	"github.com/ryutah/firebase-auth-example/server/common"
+	"github.com/ryutah/firebase-auth-example/webui-example/server/common"
 )
 
 type Injector interface {

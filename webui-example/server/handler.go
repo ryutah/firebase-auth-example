@@ -6,8 +6,8 @@ import (
 	"net/http"
 
 	"github.com/gorilla/handlers"
-	"github.com/ryutah/firebase-auth-example/server/auth"
-	"github.com/ryutah/firebase-auth-example/server/common"
+	"github.com/ryutah/firebase-auth-example/webui-example/server/auth"
+	"github.com/ryutah/firebase-auth-example/webui-example/server/common"
 
 	"google.golang.org/appengine"
 )

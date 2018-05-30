@@ -6,7 +6,7 @@ import (
 
 	"google.golang.org/appengine"
 
-	"github.com/ryutah/firebase-auth-example/server/common"
+	"github.com/ryutah/firebase-auth-example/webui-example/server/common"
 
 	firebase "firebase.google.com/go"
 )

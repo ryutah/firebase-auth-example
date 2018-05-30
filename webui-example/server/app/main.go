@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
-	"github.com/ryutah/firebase-auth-example/server"
+	"github.com/ryutah/firebase-auth-example/webui-example/server"
 )
 
 func init() {
