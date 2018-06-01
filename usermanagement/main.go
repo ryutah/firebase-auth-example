@@ -82,7 +82,7 @@ func revokeRefreshToken(w http.ResponseWriter, r *http.Request) {
 func createAuthClient() (*auth.Client, error) {
 	opts := option.WithCredentialsFile(os.Getenv("GOOGLE_APPLICATION_CREDENTIALS"))
 	app, err := firebase.NewApp(context.Background(), &firebase.Config{
-		ProjectID: "[PROJECT_ID]",
+		ProjectID: os.Getenv("PROJECT_ID"),
 	}, opts)
 	if err != nil {
 		return nil, err

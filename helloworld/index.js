@@ -2,9 +2,9 @@ import firebase from "firebase/app";
 import "firebase/auth";
 
 const config = {
-  apiKey: "[API_KEY]",
-  authDomain: "[PROJECT_ID].firebaseapp.com",
-  projectId: "[PROJECT_ID]",
+  apiKey: process.env.API_KEY,
+  authDomain: `${process.env.PROJECT_ID}.firebaseapp.com`,
+  projectId: process.env.PROJECT_ID,
 };
 
 firebase.initializeApp(config);

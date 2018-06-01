@@ -14,6 +14,12 @@
   version = "v3.0.0"
 
 [[projects]]
+  name = "github.com/dgrijalva/jwt-go"
+  packages = ["."]
+  revision = "06ea1031745cb8b3dab3f6a236daf2b0aa468b7e"
+  version = "v3.2.0"
+
+[[projects]]
   name = "github.com/golang/protobuf"
   packages = ["proto","protoc-gen-go/descriptor","ptypes","ptypes/any","ptypes/duration","ptypes/empty","ptypes/struct","ptypes/timestamp","ptypes/wrappers"]
   revision = "b4deda0973fb4c70b50d226b1af49f3da59f5265"
@@ -94,6 +100,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "7bb30b0266f1f533f2d018ae8d434c3ab8a69c04aca1d1bd64eeb9ff624ab3ac"
+  inputs-digest = "0e44929d5af3ccf704f23c7bf40d82f002c1434330f8ef18ce35172a336449e2"
   solver-name = "gps-cdcl"
   solver-version = 1
