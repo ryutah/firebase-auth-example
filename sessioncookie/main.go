@@ -110,28 +110,7 @@ func verifySessionCookie(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	token, err := jwt.ParseWithClaims(sessionCookie.Value, new(myClaim), func(tkn *jwt.Token) (interface{}, error) {
-		if _, ok := tkn.Method.(*jwt.SigningMethodRSA); !ok {
-			return nil, fmt.Errorf("unexpected signing method: %v", tkn.Header["alg"])
-		}
-		keys, err := getRSAKeys()
-		if err != nil {
-			return nil, err
-		}
-		key, ok := keys[tkn.Header["kid"].(string)]
-		if !ok {
-			return nil, fmt.Errorf("unexpected kid: %v", tkn.Header["kid"])
-		}
-		keyBlock, _ := pem.Decode([]byte(key))
-		if keyBlock == nil {
-			return nil, errors.New("failed to decode public key")
-		}
-		certificate, err := x509.ParseCertificate(keyBlock.Bytes)
-		if err != nil {
-			return nil, err
-		}
-		return certificate.PublicKey, nil
-	})
+	token, err := verify(sessionCookie)
 	if err != nil {
 		log.Printf("failed parse jwt token: %#v, %v", err, err.Error())
 		http.Error(w, err.Error(), 403)
@@ -161,6 +140,36 @@ func verifySessionCookie(w http.ResponseWriter, r *http.Request) {
 	usrJSON, _ := json.MarshalIndent(usr, "", "  ")
 	log.Println(string(usrJSON))
 	fmt.Fprintln(w, "Success verify!!")
+}
+
+func revokeRefreshToken(w http.ResponseWriter, r *http.Request) {
+	sessionCookie, err := r.Cookie("session")
+	if err != nil {
+		log.Printf("failed to get cookie: %v", err)
+		http.Error(w, err.Error(), 403)
+		return
+	}
+
+	token, err := verify(sessionCookie)
+	if err != nil {
+		log.Printf("failed to verify session token: %s", err)
+		http.Error(w, err.Error(), 403)
+		return
+	}
+
+	aclient, err := createAuthClient()
+	if err != nil {
+		log.Printf("failed to create auth client: %s", err)
+		http.Error(w, err.Error(), 500)
+		return
+	}
+	claim := token.Claims.(*myClaim)
+	if err := aclient.RevokeRefreshTokens(context.Background(), claim.Subject); err != nil {
+		log.Printf("failed to revoke refresh token: %s", err)
+		http.Error(w, err.Error(), 500)
+		return
+	}
+	fmt.Fprintln(w, "Success to revoke refresh token")
 }
 
 func createClient() (*http.Client, error) {
@@ -206,4 +215,33 @@ func getRSAKeys() (map[string]string, error) {
 		return nil, err
 	}
 	return result, nil
+}
+
+func verify(sessionCookie *http.Cookie) (*jwt.Token, error) {
+	token, err := jwt.ParseWithClaims(sessionCookie.Value, new(myClaim), func(tkn *jwt.Token) (interface{}, error) {
+		if _, ok := tkn.Method.(*jwt.SigningMethodRSA); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v", tkn.Header["alg"])
+		}
+		keys, err := getRSAKeys()
+		if err != nil {
+			return nil, err
+		}
+		key, ok := keys[tkn.Header["kid"].(string)]
+		if !ok {
+			return nil, fmt.Errorf("unexpected kid: %v", tkn.Header["kid"])
+		}
+		keyBlock, _ := pem.Decode([]byte(key))
+		if keyBlock == nil {
+			return nil, errors.New("failed to decode public key")
+		}
+		certificate, err := x509.ParseCertificate(keyBlock.Bytes)
+		if err != nil {
+			return nil, err
+		}
+		return certificate.PublicKey, nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	return token, nil
 }
