@@ -1,0 +1,26 @@
+{
+  "name": "firebase-auth-example",
+  "version": "1.0.0",
+  "description": "GAE/Go Authenticate example use Firebase Authenticate.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/ryutah/firebase-auth-example.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ryutah/firebase-auth-example/issues"
+  },
+  "homepage": "https://github.com/ryutah/firebase-auth-example#readme",
+  "dependencies": {
+    "firebase": "^5.0.4"
+  },
+  "devDependencies": {
+    "parcel-bundler": "^1.8.1"
+  }
+}
