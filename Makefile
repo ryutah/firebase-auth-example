@@ -14,3 +14,7 @@ serve_helloworld: ## Start hello world application
 serve_sessioncookie: ## Start session cookie sample application
 	npx parcel build ./sessioncookie/index.html
 	cd ./sessioncookie && go run main.go
+
+serve_usermanagement: ## Start user management sample application
+	npx parcel build ./usermanagement/index.html -d ./usermanagement/dist --public-url /static
+	go run ./usermanagement/main.go
