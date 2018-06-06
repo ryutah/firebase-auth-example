@@ -18,3 +18,7 @@ serve_sessioncookie: ## Start session cookie sample application
 serve_usermanagement: ## Start user management sample application
 	npx parcel build ./usermanagement/index.html -d ./usermanagement/dist --public-url /static
 	go run ./usermanagement/main.go
+
+serve_sessionmanagement: ## Start session management sample application
+	npx parcel build ./sessionmanagement/index.html -d ./sessionmanagement/dist --public-url /static
+	go run ./sessionmanagement/session.go ./sessionmanagement/main.go
