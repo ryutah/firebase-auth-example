@@ -15,14 +15,9 @@ document.querySelector("#login").addEventListener("click", () => {
   const provider = new firebase.auth.GoogleAuthProvider();
   provider.setCustomParameters({
     redirect_uri: "http://localhost:1234",
+    response_type: "code",
   });
-  firebase
-    .auth()
-    .signInWithRedirect(provider)
-    .then((result) => {
-      console.log(result);
-    })
-    .catch(console.error);
+  firebase.auth().signInWithRedirect(provider);
 });
 
 document.querySelector("#logout").addEventListener("click", (e) => {
@@ -34,6 +29,11 @@ document.querySelector("#logout").addEventListener("click", (e) => {
     .signOut()
     .then(() => console.log("Success sign out"))
     .catch(console.error);
+});
+
+document.querySelector("#getoauth").addEventListener("click", () => {
+  const provider = new firebase.auth.GoogleAuthProvider();
+  firebase.auth().currentUser.reauthenticateWithRedirect(provider);
 });
 
 firebase.auth().onAuthStateChanged((usr) => {
@@ -48,5 +48,6 @@ firebase
   .getRedirectResult()
   .then((result) => {
     console.log(result);
+    window.redirectResult = result;
   })
   .catch(console.error);
