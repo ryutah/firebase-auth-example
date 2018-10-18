@@ -1,0 +1,14 @@
+runtime: go
+api_version: go1.9
+
+handlers:
+- url: /public
+  static_dir: public
+
+- url: /
+  static_files: public/signin.html
+  upload: public/signin.html
+
+- url: /.*
+  script: _go_app
+

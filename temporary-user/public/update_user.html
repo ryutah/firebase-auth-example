@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title></title>
+</head>
+
+<body>
+  <script src="https://www.gstatic.com/firebasejs/5.5.4/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    const config = {
+      apiKey: "AIzaSyDafarlAdnPJk9rUqJc5R36NKobQPVL7rk",
+      authDomain: "sandbox-hara.firebaseapp.com",
+      databaseURL: "https://sandbox-hara.firebaseio.com",
+      projectId: "sandbox-hara",
+      storageBucket: "sandbox-hara.appspot.com",
+      messagingSenderId: "35954475990"
+    };
+    firebase.initializeApp(config);
+
+    let user;
+    firebase.auth().onAuthStateChanged(async (u) => {
+      user = u
+      console.log(user)
+      if (!user) {
+        location.href = "/"
+      }
+
+      const idToken = await user.getIdTokenResult()
+      if (!idToken.claims.email_verified) {
+        location.href = "/public/update_user.html"
+      }
+    })
+  </script>
+
+  <input id="name" type="text">
+  <input id="update" type="button" value="Update">
+
+  <script src="https://www.gstatic.com/firebasejs/5.5.4/firebase.js"></script>
+  <script>
+    document.querySelector("#update").addEventListener("click", async () => {
+      try {
+        const name = document.querySelector("#name").value
+        const token = await user.getIdToken()
+        const resp = await fetch("/users/me", {
+          method: "PATCH",
+          headers: {
+            "Authorization": "Bearer " + token,
+          },
+          body: JSON.stringfy({
+            name,
+          })
+        })
+        const body = await resp.json()
+        console.log(body)
+      } catch (e) {
+        console.error(e)
+      }
+    })
+  </script>
+</body>
+
+</html>

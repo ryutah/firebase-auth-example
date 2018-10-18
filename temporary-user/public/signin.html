@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title></title>
+</head>
+
+<body>
+  <script src="https://www.gstatic.com/firebasejs/5.5.4/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    const config = {
+      apiKey: "AIzaSyDafarlAdnPJk9rUqJc5R36NKobQPVL7rk",
+      authDomain: "sandbox-hara.firebaseapp.com",
+      databaseURL: "https://sandbox-hara.firebaseio.com",
+      projectId: "sandbox-hara",
+      storageBucket: "sandbox-hara.appspot.com",
+      messagingSenderId: "35954475990"
+    };
+    firebase.initializeApp(config);
+
+    firebase.auth().onAuthStateChanged(async (u) => {
+      console.log(u)
+      if (u) {
+        location.href = "/public/top.html"
+      }
+    })
+  </script>
+
+  <div>
+    <input id="email" type="email">
+    <input id="pass" type="password">
+    <input id="signin" type="button" value="Sign in">
+  </div>
+  <a href="/public/new_user.html">Create Account</a>
+
+  <script type="text/javascript">
+    document.querySelector("#signin").addEventListener("click", async () => {
+      try {
+        const email = document.querySelector("#email").value
+        const pass = document.querySelector("#pass").value
+        const cred = await firebase.auth().signInWithEmailAndPassword(email, pass)
+        console.log(cred)
+        location.href = "/public/top.html"
+      } catch (e) {
+        console.error(e)
+        alert("failed to sign in")
+      }
+    })
+  </script>
+</body>
+
+</html>
